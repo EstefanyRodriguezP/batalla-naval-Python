@@ -1,3 +1,23 @@
+def pedir_entero(mensaje, minimo=0, maximo=9):
+    while True:
+        entrada = input(mensaje)
+        if entrada.isdigit():
+            numero = int(entrada)
+            if minimo <= numero <= maximo:
+                return numero
+            else:
+                print(f"Por favor, ingresa un número entre {minimo} y {maximo}.")
+        else:
+            print("Entrada inválida. Debes ingresar un número entero.")
+
+def pedir_direccion():
+    while True:
+        direccion = input("Dirección (H para horizontal, V para vertical): ").upper()
+        if direccion in ['H', 'V']:
+            return direccion
+        else:
+            print("Entrada inválida. Debes ingresar 'H' o 'V'.")
+
 class Ship:
     def __init__(self, name, size):
         self.name = name
@@ -57,9 +77,9 @@ class Player:
         for ship in ships:
             while True:
                 print(f"{self.name}, coloca tu {ship.name} de tamaño {ship.size}.")
-                start_row = int(input("Fila inicial: "))
-                start_col = int(input("Columna inicial: "))
-                direction = input("Dirección (H para horizontal, V para vertical): ").upper()
+                start_row = pedir_entero("Fila inicial (0-9): ")
+                start_col = pedir_entero("Columna inicial (0-9): ")
+                direction = pedir_direccion()
                 if ship.place_ship(start_row, start_col, direction, self.board):
                     self.ships.append(ship)
                     self.print_board(self.board)
@@ -75,8 +95,8 @@ class Player:
     def attack(self, opponent):
         while True:
             print(f"{self.name}, elige una posición para atacar.")
-            row = int(input("Fila: "))
-            col = int(input("Columna: "))
+            row = pedir_entero("Fila (0-9): ")
+            col = pedir_entero("Columna (0-9): ")
             if 0 <= row < 10 and 0 <= col < 10:
                 if opponent.board[row][col] == ' ':
                     print("Agua!")
@@ -123,6 +143,7 @@ class BattleshipGame:
                 break
             current_player, opponent = opponent, current_player
 
-# Crear una instancia del juego y jugar
+
 game = BattleshipGame()
+
 game.play()
